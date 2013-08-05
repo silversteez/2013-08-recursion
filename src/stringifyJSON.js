@@ -6,8 +6,6 @@ var stringifyJSON = function (obj) {
   var result = "";
   if (typeof obj === "string") {
     result +='"' + obj + '"';
-  } else if (typeof obj === "number"){
-    result += obj.toString();
   }
   else if(Array.isArray(obj)){
     result += "[";
@@ -18,7 +16,21 @@ var stringifyJSON = function (obj) {
         }
       });
     result += "]";
-
+  }
+  else if(obj === null){
+    result += "null";
+  }
+  else if (typeof obj === "object") {
+    result += "{";
+      result  +=  _.map(obj, function(item, key) {
+        if (item !== undefined) {
+          return stringifyJSON(key) + ":" + stringifyJSON(item);
+        }
+      });
+    result += "}";
+  }
+  else {
+    result += '' + obj;
   }
   return result;
 };

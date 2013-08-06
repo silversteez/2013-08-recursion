@@ -22,11 +22,14 @@ var stringifyJSON = function (obj) {
   }
   else if (typeof obj === "object") {
     result += "{";
-      result  +=  _.map(obj, function(item, key) {
-        if (item !== undefined) {
-          return stringifyJSON(key) + ":" + stringifyJSON(item);
-        }
-      });
+    var tempResult = _.map(obj, function(item, key) {
+      if (item !== undefined && typeof item !== "function") {
+        return stringifyJSON(key) + ":" + stringifyJSON(item);
+      }
+    });
+    result += _.filter(tempResult, function(item) {
+      return item !== undefined;
+    });
     result += "}";
   }
   else {
